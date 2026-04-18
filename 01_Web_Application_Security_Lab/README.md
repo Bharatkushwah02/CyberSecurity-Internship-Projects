@@ -8,29 +8,22 @@ The lab is fully containerized using Docker to ensure process isolation and a sa
 
 📦 Applications Included:
 DVWA (Damn Vulnerable Web App): PHP/MySQL based lab for core vulnerability testing.
-
 OWASP Juice Shop: A modern Node.js application for complex security scenarios.
-
 WebGoat: A deliberate insecure application for Java-based security lessons.
 
 
 🚀 Deployment Instructions
 Ensure Docker Desktop is running on your host machine.
-
 Clone this repository and navigate to this directory.
-
 Deploy the lab using:
 
 ```bash
 docker-compose up -d
 ```
-
 Access the labs via browser:
-
 DVWA: 
 ``` http://localhost:8081 ```
 (Default Creds: admin / password)
-
 Juice Shop:``` http://localhost:3000  ```
 
 
@@ -54,18 +47,13 @@ Payload: <script>alert("Hacked by Bharat")</script>
 
 Description: Malicious JavaScript was successfully executed in the context of the user's session because the application failed to sanitize user input before rendering it on the page.
 
-Status: ✅ Successfully exploited.
 
+
+Status: ✅ Successfully exploited.
 📝 Deliverables Checklist (Internship Progress)
 [x] Docker-based Lab Setup
-
 [x] SQLi Lab Reproduction & Documentation
-
 [x] XSS Lab Reproduction & Documentation
-
 [ ] Burp Suite Interception Logs
-
 [ ] Secure Code Remediation (Before/After)
-
 [ ] Final Security Assessment Report
-
