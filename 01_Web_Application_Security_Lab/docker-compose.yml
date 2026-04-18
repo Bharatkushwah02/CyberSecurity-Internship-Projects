@@ -1,0 +1,20 @@
+version: '3'
+services:
+  # 1. DVWA (Basic Hacking Lab)
+  dvwa:
+    image: vulnerables/web-dvwa
+    ports:
+      - "8081:80"
+
+  # 2. OWASP Juice Shop (Modern Lab)
+  juiceshop:
+    image: bkimminich/juice-shop
+    ports:
+      - "3000:3000"
+
+  # 3. WebGoat (Java Based Lab)
+  webgoat:
+    image: webgoat/webgoat
+    ports:
+      - "8080:8080"
+      - "9001:9001"
