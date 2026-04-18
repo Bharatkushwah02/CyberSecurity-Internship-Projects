@@ -42,8 +42,7 @@ Status: ✅ Successfully exploited.
 
 2. Cross-Site Scripting (XSS) - Reflected
 Vector: Name input field.
-
-Payload: <script>alert("Hacked by Bharat")</script>
+Payload: ```<script>alert("Hacked by Bharat")</script>```
 
 Description: Malicious JavaScript was successfully executed in the context of the user's session because the application failed to sanitize user input before rendering it on the page.
 
@@ -52,8 +51,13 @@ Description: Malicious JavaScript was successfully executed in the context of th
 Status: ✅ Successfully exploited.
 📝 Deliverables Checklist (Internship Progress)
 [x] Docker-based Lab Setup
+
 [x] SQLi Lab Reproduction & Documentation
+
 [x] XSS Lab Reproduction & Documentation
+
 [ ] Burp Suite Interception Logs
+
 [ ] Secure Code Remediation (Before/After)
+
 [ ] Final Security Assessment Report
